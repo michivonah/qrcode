@@ -1,0 +1,141 @@
+html{scroll-behavior: smooth;}
+
+body{
+   margin: 0;
+   padding: 0;
+   color: var(--color);
+   background: var(--background);
+   text-align: left;
+   font-family: "Open Sans", sans-serif;
+   --color: #000;
+   --background: #f6f6f6;
+   --theme: #e67e22;
+   --theme2: #d35400;
+   }
+
+   #navbar{
+     background: var(--theme);
+     height: 56px;
+     width: 100%;
+     top: 0;
+     position: fixed;
+     text-align: center;
+     z-index: 999;
+     color: #fff;
+     user-select: none;
+   }
+
+   #navbar-placeholder{
+     background: transparent;
+     height: 56px;
+     width: 100%;
+     top: 0;
+     position: static;
+   }
+
+   #content{
+     width: 100%;
+     max-width: 1100px;
+     margin: auto;
+   }
+
+   #content h1, #content h3, #content p{
+     margin: 10px;
+   }
+
+
+   #new{
+     height: 56px;
+     width: 56px;
+     font-size: 24px;
+     border: none;
+     border-radius: 50%;
+     margin: 20px;
+     right: 0;
+     bottom: 0;
+     color: #fff;
+     background: var(--theme);
+     float: right;
+     position: fixed;
+     outline: none;
+     display: none;
+   }
+
+   #creator{
+     width: auto;
+   }
+
+   #creator input{
+     width: 90%;
+     height: auto;
+     font-size: 24px;
+     margin: 5px;
+     background: var(--theme);
+     color: #fff;
+     border: 2px solid;
+     border-color: var(--theme2);
+     border-radius: 8px;
+     outline: none;
+   }
+
+   #create-btn{
+     width: 90%;
+     height: auto;
+     font-size: 24px;
+     margin: 5px;
+     background: var(--theme);
+     color: #fff;
+     border: 2px solid;
+     border-color: var(--theme2);
+     border-radius: 8px;
+     outline: none;
+   }
+
+   #create-btn:hover{
+     background: var(--theme2);
+   }
+
+   #qr-code-img{
+     width: 90%;
+     max-width: 400px;
+     height: auto;
+     margin: 15px;
+     margin-left: 5%;
+     margin-right: 5%;
+   }
+
+   .qr-type-btn{
+     width: auto;
+     height: auto;
+     font-size: 16px;
+     background: var(--theme);
+     color: #fff;
+     border: 2px solid;
+     border-color: var(--theme2);
+     outline: none;
+     user-select: none;
+     margin: 5px;
+   }
+
+   .qr-type-btn:hover{
+     background: var(--theme2);
+   }
+
+   .qr-type-btn:first-of-type{
+     border-top-left-radius: 8px;
+     border-bottom-left-radius: 8px;
+   }
+
+   .qr-type-btn:last-of-type{
+     border-top-right-radius: 8px;
+     border-bottom-right-radius: 8px;
+   }
+
+
+   @keyframes loading{
+   to{ transform: rotate(720deg); }
+   }
+
+   ::selection {background: var(--theme2); color: #ffffff;}
+   ::-moz-selection {background: var(--theme2); color: #ffffff;}
+   ::placeholder {color: #ffffff;}
