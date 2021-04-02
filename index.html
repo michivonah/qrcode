@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+         <title>QR Code Creator</title>
+         <meta name="mobile-web-app-title" content="QR Code">
+         <meta name="apple-mobile-web-app-title" content="QR Code">
+         <link rel="icon" type="image/png" href="favicon.png">
+         <link rel="shortcut icon" type="image/png" href="favicon.png">
+         <link rel="apple-touch-icon" href="icons/favicon.svg" sizes="any">
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+         <link rel="stylesheet" type="text/css" href="style.css"/>
+         <script language="javascript" type="text/javascript" src="script.js"></script>
+         <meta charset="UTF-8">
+         <meta name="theme-color" content="#e67e22">
+         <meta name="apple-mobile-web-app-status-bar-style" content="#e67e22">
+         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+         <meta name="mobile-web-app-capable" content="yes">
+         <meta name="apple-mobile-web-app-capable" content="yes">
+         <link rel="manifest" href="manifest.json">
+         <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+         <link rel="preconnect" href="https://fonts.gstatic.com">
+         <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+      <div id="navbar">
+        <p>QR-Code Creator</p>
+      </div>
+      <div id="navbar-placeholder"></div>
+
+      <div id="content">
+        <div id="home">
+          <h3>QR-Code erstellen</h3>
+          <p>Hier kannst du kostenlos QR-Codes erstellen. W&auml;hle unten einfach aus, welche Art von QR-Code du erstellen willst und f&uuml;ge dann den Inhalt hinzu.</p>
+        </div>
+        <div id="creator">
+          <div id="qr-types">
+            <button class="qr-type-btn" onclick="changeType('url')">URL <i class="fas fa-link"></i></button>
+            <button class="qr-type-btn" onclick="changeType('text')">Text <i class="fas fa-sticky-note"></i></button>
+            <button class="qr-type-btn" onclick="changeType('image')">Bilder <i class="fas fa-image"></i></button>
+            <button class="qr-type-btn" onclick="changeType('video')">Video <i class="fas fa-video"></i></button>
+            <button class="qr-type-btn" onclick="changeType('contact')">Kontakt <i class="fas fa-address-book"></i></button>
+          </div>
+          <input id="qr-input" type="text" placeholder="URL">
+          <button id="create-btn" onclick="newQrcode()">QR-Code erstellen</button>
+          <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=900x900&data=Example">
+        </div>
+        <div id="footer">
+          <p>Um die QR-Codes zu erstellen wird die API von goqr.me verwendet. Wenn sie einen QR-Code erstellen, werden die eingegeben Daten an goqr.me &uuml;bermittelt.</p>
+          <p>Version 1.0.0</p>
+        </div>
+        <button id="new"><i class="fas fa-search"></i></button>
+      </div>
+
+
+      <script>
+      // Loading
+      $(window).on("load", function(){
+        if(window.matchMedia('(prefers-color-scheme: dark)').matches || localStorage.getItem('darkmode') == "true"){
+              document.body.style.setProperty('--color', '#fff');
+              document.body.style.setProperty('--background', '#000');
+          }
+        $("#loading-screen").fadeOut(750);
+      });
+
+      // create qr code
+      function newQrcode(){
+        var value = document.getElementById('qr-input').value;
+        var qrlink = "https://api.qrserver.com/v1/create-qr-code/?size=900x900&data=" + value;
+        var qrcode = document.getElementById("qr-code-img");
+        qrcode.src = qrlink;
+      }
+
+      // change type
+      function changeType(type){
+        var inputField = document.getElementById('qr-input');
+        inputField.style.display = "block";
+        if(type == "url"){
+          inputField.placeholder = "URL einfügen";
+        }
+        else if(type == "text"){
+          inputField.placeholder = "Text hier schreiben...";
+        }
+        else if(type == "image"){
+          inputField.placeholder = "Link zum Bild hier einfügen";
+        }
+        else if(type == "video"){
+          inputField.placeholder = "Link zum YouTube Video hier einfügen";
+        }
+        else if(type == "contact"){
+          //inputField.value = "Text";
+          inputField.style.display = "none";
+        }
+        else{
+          inputField.style.display = "none";
+        }
+      }
+      </script>
+</body>
+</html>
