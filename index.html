@@ -10,7 +10,6 @@
          <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
          <link rel="stylesheet" type="text/css" href="style.css"/>
-         <script language="javascript" type="text/javascript" src="script.js"></script>
          <meta charset="UTF-8">
          <meta name="theme-color" content="#e67e22">
          <meta name="apple-mobile-web-app-status-bar-style" content="#e67e22">
@@ -25,6 +24,11 @@
 </head>
 <body>
 
+      <div id="loading-screen">
+        <div id="loader"></div>
+      </div>
+
+
       <div id="navbar">
         <p>QR-Code Creator</p>
       </div>
@@ -37,19 +41,38 @@
         </div>
         <div id="creator">
           <div id="qr-types">
-            <button class="qr-type-btn" onclick="changeType('url')">URL <i class="fas fa-link"></i></button>
-            <button class="qr-type-btn" onclick="changeType('text')">Text <i class="fas fa-sticky-note"></i></button>
-            <button class="qr-type-btn" onclick="changeType('image')">Bilder <i class="fas fa-image"></i></button>
-            <button class="qr-type-btn" onclick="changeType('video')">Video <i class="fas fa-video"></i></button>
-            <button class="qr-type-btn" onclick="changeType('contact')">Kontakt <i class="fas fa-address-book"></i></button>
+            <button id="url-btn" class="qr-type-btn active-type" onclick="changeType('url')">URL <i class="fas fa-link"></i></button>
+            <button id="text-btn" class="qr-type-btn" onclick="changeType('text')">Text <i class="fas fa-sticky-note"></i></button>
+            <button id="image-btn" class="qr-type-btn" onclick="changeType('image')">Bilder <i class="fas fa-image"></i></button>
+            <button id="video-btn" class="qr-type-btn" onclick="changeType('video')">Video <i class="fas fa-video"></i></button>
+            <button id="contact-btn" class="qr-type-btn" onclick="changeType('contact')">Kontakt <i class="fas fa-address-book"></i></button>
           </div>
-          <input id="qr-input" type="text" placeholder="URL">
+          <div id="input-container">
+            <div id="url-container" class="input-container" style="display: block;">
+              <input id="qr-input" type="text" placeholder="URL einfügen">
+            </div>
+            <div id="text-container" class="input-container">
+              <textarea id="text-input" placeholder="Hier Text schreiben...."></textarea>
+            </div>
+            <div id="image-container" class="input-container">
+            </div>
+            <div id="video-container" class="input-container">
+            </div>
+            <div id="contact-container" class="input-container">
+              <input type="name" placeholder="Name">
+              <input type="email" placeholder="E-Mail Adresse">
+              <input type="tel" placeholder="Telefonnummer">
+            </div>
+            <div id="wlan-container" class="input-container">
+            </div>
+          </div>
           <button id="create-btn" onclick="newQrcode()">QR-Code erstellen</button>
-          <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=900x900&data=Example">
+          <button onclick="downloadQrcode('png')" style="display:none;">QR-Code herunterladen</button>
+          <img id="qr-code-img" src="favicon.png">
         </div>
         <div id="footer">
           <p>Um die QR-Codes zu erstellen wird die API von goqr.me verwendet. Wenn sie einen QR-Code erstellen, werden die eingegeben Daten an goqr.me &uuml;bermittelt.</p>
-          <p>Version 1.0.0</p>
+          <p>Version 1.0.1</p>
         </div>
         <button id="new"><i class="fas fa-search"></i></button>
       </div>
@@ -61,6 +84,7 @@
         if(window.matchMedia('(prefers-color-scheme: dark)').matches || localStorage.getItem('darkmode') == "true"){
               document.body.style.setProperty('--color', '#fff');
               document.body.style.setProperty('--background', '#000');
+              document.getElementById("qr-code-img").src = "favicon-white.png";
           }
         $("#loading-screen").fadeOut(750);
       });
@@ -68,15 +92,44 @@
       // create qr code
       function newQrcode(){
         var value = document.getElementById('qr-input').value;
-        var qrlink = "https://api.qrserver.com/v1/create-qr-code/?size=900x900&data=" + value;
-        var qrcode = document.getElementById("qr-code-img");
-        qrcode.src = qrlink;
+        if(value != ""){
+          var qrlink = "https://api.qrserver.com/v1/create-qr-code/?size=900x900&format=png&margin=0&data=" + value;
+          var qrcode = document.getElementById("qr-code-img");
+          qrcode.src = qrlink;
+        }
+        else{
+          console.log('Error, no input value.');
+        }
+      }
+
+      // download qr code
+      function downloadQrcode(filetype){
+        if(filetype == "png"){
+          var value = document.getElementById('qr-input').value;
+          var qrlink = "https://api.qrserver.com/v1/create-qr-code/?size=900x900&format=png&margin=0&data=" + value;
+          var qrcode = document.getElementById("qr-code-img");
+          qrcode.src = qrlink;
+        }
+        else if(filetype == "svg"){
+          var value = document.getElementById('qr-input').value;
+          var qrlink = "https://api.qrserver.com/v1/create-qr-code/?size=900x900&format=svg&margin=0&data=" + value;
+          var qrcode = document.getElementById("qr-code-img");
+          qrcode.src = qrlink;
+        }
       }
 
       // change type
       function changeType(type){
         var inputField = document.getElementById('qr-input');
+        var pressedButton = document.getElementById(event.target.id);
+        var allButtons = document.getElementsByClassName("qr-type-btn");
+        var allButtonsLoopCount;
+        for (allButtonsLoopCount = 0; allButtonsLoopCount < allButtons.length; allButtonsLoopCount++) {
+          allButtons[allButtonsLoopCount].classList.remove("active-type");
+        }
+        pressedButton.classList.add("active-type");
         inputField.style.display = "block";
+        inputField.value = "";
         if(type == "url"){
           inputField.placeholder = "URL einfügen";
         }
@@ -90,7 +143,6 @@
           inputField.placeholder = "Link zum YouTube Video hier einfügen";
         }
         else if(type == "contact"){
-          //inputField.value = "Text";
           inputField.style.display = "none";
         }
         else{
