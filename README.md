@@ -1,5 +1,5 @@
 # qrcode
-A easy to use tool for create qr codes with the api from goqr.me
+A easy to use tool for creating qr codes with the api from goqr.me
 
 # Features
 coming soon
