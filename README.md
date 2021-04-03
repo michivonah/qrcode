@@ -7,6 +7,9 @@ coming soon
 # Changelog
 Here you find all changes and updates
 
+### Version 1.0.2
+- added future functions disclaimer
+
 ### Version 1.0.1
 - loadingscreen added
 - buttons improved
