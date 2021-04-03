@@ -4,6 +4,10 @@ A easy to use tool for creating qr codes with the api from goqr.me
 # Features
 coming soon
 
+# Roadmap
+- [ ] QR-Code für WLAN erstellen
+- [ ] QR-Code für Kontakt erstellen
+
 # Changelog
 Here you find all changes and updates
 
