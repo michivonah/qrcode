@@ -48,6 +48,7 @@
             <button id="contact-btn" class="qr-type-btn" onclick="changeType('contact')">Kontakt <i class="fas fa-address-book"></i></button>
           </div>
           <div id="input-container">
+            <p id="future-function" style="display:none;">Diese Funktion steht aktuell noch nicht zur Verf&uuml;gung.</p>
             <div id="url-container" class="input-container" style="display: block;">
               <input id="qr-input" type="text" placeholder="URL einfügen">
             </div>
@@ -72,7 +73,7 @@
         </div>
         <div id="footer">
           <p>Um die QR-Codes zu erstellen wird die API von goqr.me verwendet. Wenn sie einen QR-Code erstellen, werden die eingegeben Daten an goqr.me &uuml;bermittelt.</p>
-          <p>Version 1.0.1</p>
+          <p>Version 1.0.2</p>
         </div>
         <button id="new"><i class="fas fa-search"></i></button>
       </div>
@@ -120,6 +121,7 @@
 
       // change type
       function changeType(type){
+        document.getElementById('future-function').style.display = "none";
         var inputField = document.getElementById('qr-input');
         var pressedButton = document.getElementById(event.target.id);
         var allButtons = document.getElementsByClassName("qr-type-btn");
@@ -144,9 +146,11 @@
         }
         else if(type == "contact"){
           inputField.style.display = "none";
+          document.getElementById('future-function').style.display = "block";
         }
         else{
           inputField.style.display = "none";
+          document.getElementById('future-function').style.display = "block";
         }
       }
       </script>
