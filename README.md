@@ -17,6 +17,13 @@ A easy to use tool for creating qr codes with the api from goqr.me
 # Changelog
 Here you find all changes and updates
 
+### Version 1.1.0
+- some design changes
+- a new concept to create codes
+- create whatsapp qr codes
+- create wlan qr codes
+- create contact qr codes
+
 ### Version 1.0.2
 - added future functions disclaimer
 
