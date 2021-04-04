@@ -6,8 +6,8 @@ A easy to use tool for creating qr codes with the api from goqr.me
 - Darkmode
 
 # Roadmap
-- [ ] QR-Code for WLAN Network
-- [ ] QR-Codes for contacts
+- [x] QR-Code for WLAN Network
+- [x] QR-Codes for contacts
 - [ ] QR-Codes for Maps Location
 - [ ] Download Function for created QR-Codes
 - [ ] better design on mobile devices and desktop (optimised using of empty space)
