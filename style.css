@@ -89,7 +89,7 @@ body{
    #creator input{
      width: 90%;
      height: auto;
-     font-size: 24px;
+     font-size: 22px;
      margin: 5px;
      background: var(--theme);
      color: #fff;
@@ -97,6 +97,37 @@ body{
      border-color: var(--theme2);
      border-radius: 8px;
      outline: none;
+     font-family: "Open Sans", sans-serif;
+   }
+
+   #creator textarea{
+     width: 90%;
+     height: auto;
+     min-height: 80px;
+     font-size: 18px;
+     margin: 5px;
+     background: var(--theme);
+     color: #fff;
+     border: 2px solid;
+     border-color: var(--theme2);
+     border-radius: 8px;
+     outline: none;
+     resize: vertical;
+     font-family: "Open Sans", sans-serif;
+   }
+
+   #creator select{
+     width: 90%;
+     height: auto;
+     font-size: 18px;
+     margin: 5px;
+     background: var(--theme);
+     color: #fff;
+     border: 2px solid;
+     border-color: var(--theme2);
+     border-radius: 8px;
+     outline: none;
+     font-family: "Open Sans", sans-serif;
    }
 
    #create-btn{
@@ -110,6 +141,7 @@ body{
      border-color: var(--theme2);
      border-radius: 8px;
      outline: none;
+     font-family: "Open Sans", sans-serif;
    }
 
    #create-btn:hover{
@@ -166,12 +198,21 @@ body{
      border-color: var(--theme2);
    }
 
-   .active-type{
+   .active-type2{
      background: var(--theme2);
    }
 
    .input-container{
      display: none;
+   }
+
+   a{
+     text-decoration: none;
+     color: inherit;
+   }
+
+   a:hover{
+     text-decoration: underline;
    }
 
 
@@ -194,6 +235,9 @@ body{
        user-select: none;
        margin: 5px;
        border-radius: 8px;
+     }
+     .active-type2{
+       background: var(--theme2);
      }
    }
 
