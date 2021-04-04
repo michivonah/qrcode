@@ -1,0 +1,32 @@
+{
+  "name": "QR-Code",
+  "short_name": "QR-Code",
+  "description": "Eine einfache Möglichkeit QR-Codes zu erstellen.",
+  "lang": "de-DE",
+  "orientation": "any",
+  "theme_color": "#000",
+  "background_color": "#000",
+  "start_url": "https://qr.michivonah.ch/",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "https://qr.michivonah.ch/favicon.png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "https://qr.michivonah.ch/favicon.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "https://qr.michivonah.ch/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://qr.michivonah.ch/favicon.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ]
+}
