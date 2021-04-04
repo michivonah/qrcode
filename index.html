@@ -41,30 +41,53 @@
         </div>
         <div id="creator">
           <div id="qr-types">
-            <button id="url-btn" class="qr-type-btn active-type" onclick="changeType('url')">URL <i class="fas fa-link"></i></button>
+            <select id="active-type" style="display:none;">
+              <option>url</option>
+              <option>text</option>
+              <option>image</option>
+              <option>video</option>
+              <option>contact</option>
+              <option>whatsapp</option>
+              <option>wlan</option>
+            </select>
+            <button id="url-btn" class="qr-type-btn active-type2" onclick="changeType('url')">URL <i class="fas fa-link"></i></button>
             <button id="text-btn" class="qr-type-btn" onclick="changeType('text')">Text <i class="fas fa-sticky-note"></i></button>
-            <button id="image-btn" class="qr-type-btn" onclick="changeType('image')">Bilder <i class="fas fa-image"></i></button>
+            <button id="image-btn" class="qr-type-btn" onclick="changeType('image')" style="display:none;">Bilder <i class="fas fa-image"></i></button>
             <button id="video-btn" class="qr-type-btn" onclick="changeType('video')">Video <i class="fas fa-video"></i></button>
             <button id="contact-btn" class="qr-type-btn" onclick="changeType('contact')">Kontakt <i class="fas fa-address-book"></i></button>
+            <button id="whatsapp-btn" class="qr-type-btn" onclick="changeType('whatsapp')">WhatsApp <i class="fab fa-whatsapp"></i></button>
+            <button id="wlan-btn" class="qr-type-btn" onclick="changeType('wlan')">WLAN <i class="fas fa-wifi"></i></button>
           </div>
           <div id="input-container">
             <p id="future-function" style="display:none;">Diese Funktion steht aktuell noch nicht zur Verf&uuml;gung.</p>
             <div id="url-container" class="input-container" style="display: block;">
-              <input id="qr-input" type="text" placeholder="URL einfügen">
+              <input id="qr-input" type="url" placeholder="URL einfügen">
             </div>
             <div id="text-container" class="input-container">
-              <textarea id="text-input" placeholder="Hier Text schreiben...."></textarea>
+              <textarea id="text-input" placeholder="Text hier schreiben..."></textarea>
             </div>
             <div id="image-container" class="input-container">
             </div>
             <div id="video-container" class="input-container">
+              <input id="video-input" type="url" placeholder="YouTube URL einfügen">
             </div>
             <div id="contact-container" class="input-container">
-              <input type="name" placeholder="Name">
-              <input type="email" placeholder="E-Mail Adresse">
-              <input type="tel" placeholder="Telefonnummer">
+              <input id="contact-name-input" type="name" placeholder="Name">
+              <input id="contact-email-input" type="email" placeholder="E-Mail Adresse">
+              <input id="contact-tel-input" type="tel" placeholder="Telefonnummer">
+            </div>
+            <div id="whatsapp-container" class="input-container">
+              <input id="whatsapp-number-input" type="tel" placeholder="Telefonnummer">
+              <textarea id="whatsapp-text-input" placeholder="Nachricht"></textarea>
             </div>
             <div id="wlan-container" class="input-container">
+              <input id="wlan-ssid-input" type="name" placeholder="SSID">
+              <input id="wlan-password-input" type="password" placeholder="Passwort">
+              <select id="wlan-encryption-input">
+                <optgroup label="Verschlüsselung"></optgroup>
+                <option>WPA</option>
+                <option>WEP</option>
+              </select>
             </div>
           </div>
           <button id="create-btn" onclick="newQrcode()">QR-Code erstellen</button>
@@ -73,7 +96,7 @@
         </div>
         <div id="footer">
           <p>Um die QR-Codes zu erstellen wird die API von goqr.me verwendet. Wenn sie einen QR-Code erstellen, werden die eingegeben Daten an goqr.me &uuml;bermittelt.</p>
-          <p>Version 1.0.2</p>
+          <p><a href="https://github.com/michivonah/qrcode#readme">Version 1.1.0</a></p>
         </div>
         <button id="new"><i class="fas fa-search"></i></button>
       </div>
@@ -92,14 +115,58 @@
 
       // create qr code
       function newQrcode(){
-        var value = document.getElementById('qr-input').value;
+        var type = document.getElementById('active-type').value;
+        var qrcode = document.getElementById("qr-code-img");
+        if(type == "url"){
+          if(document.getElementById('qr-input').value.toLowerCase().includes('http')){
+            var value = document.getElementById('qr-input').value;
+          }
+          else{
+            var value = "https://" + document.getElementById('qr-input').value;
+          }
+        }
+        else if(type == "text"){
+          var value = document.getElementById('text-input').value;
+        }
+        else if(type == "image"){
+          var value = document.getElementById('text-input').value;
+        }
+        else if(type == "video"){
+          var value = document.getElementById('video-input').value;
+        }
+        else if(type == "contact"){
+          // MECARD:N:NAME;TEL:000;EMAIL:example@example.com;;
+          var fullname = document.getElementById('contact-name-input').value;
+          var email = document.getElementById('contact-email-input').value;
+          var tel = document.getElementById('contact-tel-input').value;
+
+          var value = "MECARD:N:" + fullname + ";TEL:" + tel + ";EMAIL:" + email + ";;";
+        }
+        else if(type == "wlan"){
+          // WIFI:S:<SSID>;T:<WPA|WEP|>;P:<password>;;
+          var ssid = document.getElementById('wlan-ssid-input').value;
+          var password = document.getElementById('wlan-password-input').value;
+          var encryption = document.getElementById('wlan-encryption-input').value;
+
+          var value = "WIFI:S:" + ssid + ";T:" + encryption + ";P:" + password + ";;";
+        }
+        else if(type == "whatsapp"){
+          var number = document.getElementById('whatsapp-number-input').value;
+          var text = document.getElementById('whatsapp-text-input').value;
+
+          var value = "https://api.whatsapp.com/send?phone=" + number + "&text=" + text;
+        }
+
+        // generate
+        // goqr server https://api.qrserver.com/v1/create-qr-code/?size=900x900&format=png&margin=0&data=Hello%20world
+        // google server: https://chart.googleapis.com/chart?chs=500x500&cht=qr&choe=UTF-8&chl=Hello%20world
         if(value != ""){
           var qrlink = "https://api.qrserver.com/v1/create-qr-code/?size=900x900&format=png&margin=0&data=" + value;
-          var qrcode = document.getElementById("qr-code-img");
           qrcode.src = qrlink;
+          console.log('QR-Code generated succesfully.')
         }
         else{
-          console.log('Error, no input value.');
+          console.log('Error, invalid value.');
         }
       }
 
@@ -121,38 +188,22 @@
 
       // change type
       function changeType(type){
+        document.getElementById('active-type').value = type;
         document.getElementById('future-function').style.display = "none";
-        var inputField = document.getElementById('qr-input');
         var pressedButton = document.getElementById(event.target.id);
-        var allButtons = document.getElementsByClassName("qr-type-btn");
-        var allButtonsLoopCount;
-        for (allButtonsLoopCount = 0; allButtonsLoopCount < allButtons.length; allButtonsLoopCount++) {
-          allButtons[allButtonsLoopCount].classList.remove("active-type");
-        }
-        pressedButton.classList.add("active-type");
-        inputField.style.display = "block";
-        inputField.value = "";
-        if(type == "url"){
-          inputField.placeholder = "URL einfügen";
-        }
-        else if(type == "text"){
-          inputField.placeholder = "Text hier schreiben...";
-        }
-        else if(type == "image"){
-          inputField.placeholder = "Link zum Bild hier einfügen";
-        }
-        else if(type == "video"){
-          inputField.placeholder = "Link zum YouTube Video hier einfügen";
-        }
-        else if(type == "contact"){
-          inputField.style.display = "none";
-          document.getElementById('future-function').style.display = "block";
-        }
-        else{
-          inputField.style.display = "none";
-          document.getElementById('future-function').style.display = "block";
-        }
+        document.getElementById('url-btn').classList.remove("active-type2");
+        document.getElementById('text-btn').classList.remove("active-type2");
+        document.getElementById('image-btn').classList.remove("active-type2");
+        document.getElementById('video-btn').classList.remove("active-type2");
+        document.getElementById('contact-btn').classList.remove("active-type2");
+        document.getElementById('whatsapp-btn').classList.remove("active-type2");
+        document.getElementById('wlan-btn').classList.remove("active-type2");
+        pressedButton.classList.add("active-type2");
+        $('.input-container').css('display', 'none');
+        var containerName = type + "-container";
+        document.getElementById(containerName).style.display = "block";
       }
+
       </script>
 </body>
 </html>
