@@ -1,4 +1,4 @@
-# QR-Code Creator
+# QR-Code Creator <img src="https://qr.michivonah.ch/favicon.png" height="25px" width="auto">
 A easy to use tool for creating qr codes with the api from goqr.me
 
 # Features
