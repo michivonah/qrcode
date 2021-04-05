@@ -65,7 +65,7 @@ body{
    }
 
 
-   #new{
+   #history{
      height: 56px;
      width: 56px;
      font-size: 24px;
@@ -130,7 +130,7 @@ body{
      font-family: "Open Sans", sans-serif;
    }
 
-   #create-btn{
+   .createButtons{
      width: 90%;
      height: auto;
      font-size: 24px;
@@ -144,7 +144,7 @@ body{
      font-family: "Open Sans", sans-serif;
    }
 
-   #create-btn:hover{
+   .createButtons:hover{
      background: var(--theme2);
    }
 
@@ -220,9 +220,31 @@ body{
    to{ transform: rotate(720deg); }
    }
 
-   @media screen and (max-width:450px){
+
+   @media screen and (max-width:560px){
      .qr-type-btn{
        width: calc(50% - 10px);
+       height: auto;
+       font-size: 18px;
+       background: var(--theme);
+       color: #fff;
+       border: 2px solid;
+       border-right: 2px solid;
+       border-left: 2px solid;
+       border-color: var(--theme2);
+       outline: none;
+       user-select: none;
+       margin: 5px;
+       border-radius: 8px;
+     }
+     .active-type2{
+       background: var(--theme2);
+     }
+   }
+
+   @media screen and (max-width:300px){
+     .qr-type-btn{
+       width: calc(33% - 10px);
        height: auto;
        font-size: 18px;
        background: var(--theme);
