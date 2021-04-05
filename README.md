@@ -2,20 +2,29 @@
 A easy to use tool for creating qr codes with the api from goqr.me
 
 # Features
-- Create QR-Codes for an URL or Text
+- Create QR-Codes for an URL, Text, contact or wifi network.
 - Darkmode
+- Download qr codes
 
 # Roadmap
-- [x] QR-Code for WLAN Network
-- [x] QR-Codes for contacts
-- [ ] QR-Codes for Maps Location
-- [ ] Download Function for created QR-Codes
+- [x] qr code for WLAN Network
+- [x] qr codes for contacts
+- [ ] qr code for Maps Location
+- [ ] qr codes for images
+- [x] download Function for created qr codes
 - [ ] better design on mobile devices and desktop (optimised using of empty space)
-- [ ] changing qr code size
-- [ ] Saving latest QR-Codes in history
+- [x] changing qr code size
+- [ ] saving latest QR-Codes in history
+- [ ] english version
 
 # Changelog
 Here you find all changes and updates
+
+### Version 1.1.1
+- updated buttons
+- download function for qr codes
+- change qr codes fileformat and size
+- added title for disclaimer
 
 ### Version 1.1.0
 - some design changes
