@@ -65,7 +65,7 @@ body{
    }
 
 
-   #history{
+   #history-btn{
      height: 56px;
      width: 56px;
      font-size: 24px;
@@ -79,7 +79,79 @@ body{
      float: right;
      position: fixed;
      outline: none;
+   }
+
+   #close-history{
+     height: auto;
+     width: 80%;
+     font-size: 24px;
+     border: 2px solid;
+     border-radius: 12px;
+     border-color: #fff;
+     margin: 15px;
+     margin-left: 10%;
+     margin-right: 10%;
+     bottom: 20px;
+     color: #fff;
+     background: var(--theme2);
+     position: fixed;
+     outline: none;
+   }
+
+   #history{
+     height: calc(100vh - 66px);
+     width: 30%;
+     max-width: 400px;
+     position: fixed;
+     top: 0;
+     left: 0;
+     background: var(--theme);
+     color: #fff;
+     padding-top: 66px;
+     border-bottom-right-radius: 8px;
      display: none;
+   }
+
+   #history h3, #history p{
+     margin: 10px;
+   }
+
+   .history-entry{
+     height: auto;
+     width: 100%;
+     background: var(--theme2);
+     color: #fff;
+     margin: 0;
+     margin-top: 10px;
+     border-radius: 8px;
+     position: relative;
+     display: flex;
+     flex-direction: row;
+     flex-wrap: nowrap;
+   }
+
+   .history-entry img{
+     height: 46px;
+     width: auto;
+     margin: 15px;
+   }
+
+   .history-entry p{
+     margin: 10px;
+     flex-grow: 1;
+
+   }
+
+   .history-entry button{
+     height: 36px;
+     width: 36px;
+     font-size: 18px;
+     border: none;
+     border-radius: 50%;
+     color: #fff;
+     background: var(--theme);
+     outline: none;
+     margin: 15px;
    }
 
    #creator{
@@ -240,6 +312,17 @@ body{
      .active-type2{
        background: var(--theme2);
      }
+     #history{
+       height: calc(100vh - 66px);
+       width: 100%;
+       max-width: 100%;
+       position: fixed;
+       top: 0;
+       left: 0;
+       padding-top: 66px;
+       border-bottom-right-radius: 8px;
+       border-bottom-left-radius: 8px;
+     }
    }
 
    @media screen and (max-width:300px){
@@ -257,9 +340,6 @@ body{
        user-select: none;
        margin: 5px;
        border-radius: 8px;
-     }
-     .active-type2{
-       background: var(--theme2);
      }
    }
 
