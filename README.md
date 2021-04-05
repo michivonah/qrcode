@@ -20,6 +20,9 @@ A easy to use tool for creating qr codes with the api from goqr.me
 # Changelog
 Here you find all changes and updates
 
+### Version 1.2.0
+- added history
+
 ### Version 1.1.1
 - updated buttons
 - download function for qr codes
