@@ -123,15 +123,28 @@
         <div id="footer">
           <h3>Hinweis</h3>
           <p>Um die QR-Codes zu erstellen wird die API von goqr.me verwendet. Wenn sie einen QR-Code erstellen, werden die eingegeben Daten an goqr.me &uuml;bermittelt.</p>
-          <p><a href="https://github.com/michivonah/qrcode#readme">Version 1.1.1</a></p>
+          <p><a href="https://github.com/michivonah/qrcode#readme">Version 1.2.0</a></p>
         </div>
-        <button id="history"><i class="fas fa-history"></i></button>
+        <button id="history-btn" onclick="toggleHistory()"><i class="fas fa-history"></i></button>
+      </div>
+
+      <div id="history">
+        <h3>History <i class="fas fa-history"></i></h3>
+        <p>Hier findest du deine zuletzt erstellten QR-Codes:</p>
+        <button id="close-history" onclick="toggleHistory()"><i class="fas fa-times"></i> History schliessen</button>
+
+        <div id="entry1" class="history-entry" style="display:none;">
+          <img src="error.png">
+          <p class="history-entry-name">Name</p>
+          <p class="history-entry-url">URL</p>
+        </div>
       </div>
 
 
       <script>
       // Loading
       $(window).on("load", function(){
+        loadHistory();
         if(window.matchMedia('(prefers-color-scheme: dark)').matches || localStorage.getItem('darkmode') == "true"){
               document.body.style.setProperty('--color', '#fff');
               document.body.style.setProperty('--background', '#000');
@@ -197,6 +210,7 @@
             qrcode.src = qrlink;
             console.log('QR-Code generated succesfully.')
             console.log(qrlink);
+            addToHistory('QR-Code', value, qrlink);
           }
           else if(size == true){
             var qrsize = document.getElementById('qr-size').value;
@@ -204,6 +218,7 @@
             qrcode.src = qrlink;
             console.log('Sized qr code generated succesfully.')
             console.log(qrlink);
+            addToHistory('sized QR-Code', value, qrlink);
           }
           else{
             console.log("Error, qr code can't created.")
@@ -254,6 +269,108 @@
         $('.input-container').css('display', 'none');
         var containerName = type + "-container";
         document.getElementById(containerName).style.display = "block";
+      }
+
+      // history
+      function deleteFromHistory(){
+        var clickedButton = document.getElementById(event.target.id);
+        clickedButton.parentElement.remove();
+      }
+
+      function addToHistory(name, url, image){
+        if(localStorage.getItem('totalItems') == null){
+          localStorage.setItem('totalItems', 0)
+        }
+        var historyCounter = localStorage.getItem('totalItems');
+        historyCounter++;
+        var history = document.getElementById('history');
+        // set empty variables
+        if(name == null){
+          var name = "Name"
+        }
+        if(url == null){
+          var url = "URL"
+        }
+        if(image == null){
+          var image = "favicon.png"
+        }
+        // create new entry
+        var newEntry = document.createElement('div');
+        newEntry.id = "entryID" + historyCounter;
+        newEntry.classList = "history-entry";
+        var newName = document.createElement('p');
+        newName.textContent = name;
+        newName.classList = "history-entry-name";
+        var newUrl = document.createElement('p');
+        newUrl.textContent = url;
+        newUrl.classList = "history-entry-url";
+        var newImage = document.createElement('img');
+        newImage.src = image;
+        var newDeleteBtn = document.createElement('button');
+        newDeleteBtn.id = "entryButtonID" + historyCounter;
+        var newI = document.createElement('i');
+        newI.classList = "fas fa-trash";
+        newDeleteBtn.appendChild(newI);
+        newDeleteBtn.addEventListener("click", function(){
+          deleteFromHistory();
+        });
+
+        newEntry.appendChild(newImage);
+        newEntry.appendChild(newName);
+        newEntry.appendChild(newUrl);
+        newEntry.appendChild(newDeleteBtn);
+        history.appendChild(newEntry);
+        localStorage.setItem('itemName' + historyCounter, name);
+        localStorage.setItem('itemURL' + historyCounter, url);
+        localStorage.setItem('itemImage' + historyCounter, image);
+
+        localStorage.setItem('totalItems', historyCounter);
+      }
+
+      function toggleHistory(){
+        var history = document.getElementById('history');
+        if(history.style.display == "block"){
+          history.style.display = "none";
+        }
+        else{
+          history.style.display = "block";
+        }
+      }
+
+      function loadHistory(){
+        var history = document.getElementById('history');
+        var loopcount = 0;
+        var totalItems = localStorage.getItem('totalItems');
+        while(loopcount < totalItems){
+          loopcount++;
+          // create new entry
+          var newEntry = document.createElement('div');
+          newEntry.id = "entryID" + loopcount;
+          newEntry.classList = "history-entry";
+          var newName = document.createElement('p');
+          newName.textContent = localStorage.getItem('itemName' + loopcount);
+          newName.classList = "history-entry-name";
+          var newUrl = document.createElement('p');
+          newUrl.textContent = localStorage.getItem('itemURL' + loopcount);
+          newUrl.classList = "history-entry-url";
+          var newImage = document.createElement('img');
+          newImage.src = localStorage.getItem('itemImage' + loopcount);
+          var newDeleteBtn = document.createElement('button');
+          newDeleteBtn.id = "entryButtonID" + loopcount;
+          var newI = document.createElement('i');
+          newI.classList = "fas fa-trash";
+          newDeleteBtn.appendChild(newI);
+          newDeleteBtn.addEventListener("click", function(){
+            deleteFromHistory();
+          });
+
+          newEntry.appendChild(newImage);
+          newEntry.appendChild(newName);
+          newEntry.appendChild(newUrl);
+          newEntry.appendChild(newDeleteBtn);
+          history.appendChild(newEntry);
+
+        }
       }
 
       </script>
