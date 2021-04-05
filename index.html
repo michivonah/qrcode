@@ -90,15 +90,42 @@
               </select>
             </div>
           </div>
-          <button id="create-btn" onclick="newQrcode()">QR-Code erstellen</button>
-          <button onclick="downloadQrcode('png')" style="display:none;">QR-Code herunterladen</button>
+          <button id="create-btn" class="createButtons" onclick="newQrcode()">QR-Code erstellen</button>
           <img id="qr-code-img" src="favicon.png">
+          <button class="createButtons" onclick="downloadQrcode()">QR-Code herunterladen</button>
+          <p><a href="#qr-settings" onclick="toggleSettings()">QR-Code Eigenschaften</a></p>
+          <div id="qr-settings" style="display:none;">
+            <h3>Einstellungen</h3>
+            <p>Hier kannst du einstellen, in welchem Dateiformat und in welcher Gr&ouml;sse du den QR-Code herunterladen möchtest.</p>
+            <select id="qr-size">
+              <option selected disabled value="900x900">Gr&ouml;sse</option>
+              <option>150x150</option>
+              <option>200x200</option>
+              <option>300x300</option>
+              <option>400x400</option>
+              <option>450x450</option>
+              <option>500x500</option>
+              <option>600x600</option>
+              <option>700x700</option>
+              <option>800x800</option>
+              <option>900x900</option>
+              <option>1000x1000</option>
+            </select>
+            <select id="qr-filetype">
+              <option selected disabled value="png">Dateiformat</option>
+              <option value="png">PNG</option>
+              <option value="gif">GIF</option>
+              <option value="jpg">JPG</option>
+              <option value="svg">SVG</option>
+            </select>
+          </div>
         </div>
         <div id="footer">
+          <h3>Hinweis</h3>
           <p>Um die QR-Codes zu erstellen wird die API von goqr.me verwendet. Wenn sie einen QR-Code erstellen, werden die eingegeben Daten an goqr.me &uuml;bermittelt.</p>
-          <p><a href="https://github.com/michivonah/qrcode#readme">Version 1.1.0</a></p>
+          <p><a href="https://github.com/michivonah/qrcode#readme">Version 1.1.1</a></p>
         </div>
-        <button id="new"><i class="fas fa-search"></i></button>
+        <button id="history"><i class="fas fa-history"></i></button>
       </div>
 
 
@@ -114,7 +141,7 @@
       });
 
       // create qr code
-      function newQrcode(){
+      function newQrcode(fileformat, size){
         var type = document.getElementById('active-type').value;
         var qrcode = document.getElementById("qr-code-img");
         if(type == "url"){
@@ -160,10 +187,27 @@
         // generate
         // goqr server https://api.qrserver.com/v1/create-qr-code/?size=900x900&format=png&margin=0&data=Hello%20world
         // google server: https://chart.googleapis.com/chart?chs=500x500&cht=qr&choe=UTF-8&chl=Hello%20world
+        if(fileformat == null){
+          var fileformat = "png";
+        }
+
         if(value != ""){
-          var qrlink = "https://api.qrserver.com/v1/create-qr-code/?size=900x900&format=png&margin=0&data=" + value;
-          qrcode.src = qrlink;
-          console.log('QR-Code generated succesfully.')
+          if(size == null){
+            var qrlink = "https://api.qrserver.com/v1/create-qr-code/?size=900x900&format=" + fileformat + "&margin=0&data=" + value;
+            qrcode.src = qrlink;
+            console.log('QR-Code generated succesfully.')
+            console.log(qrlink);
+          }
+          else if(size == true){
+            var qrsize = document.getElementById('qr-size').value;
+            var qrlink = "https://api.qrserver.com/v1/create-qr-code/?size=" + qrsize + "&format=" + fileformat + "&margin=0&data=" + value;
+            qrcode.src = qrlink;
+            console.log('Sized qr code generated succesfully.')
+            console.log(qrlink);
+          }
+          else{
+            console.log("Error, qr code can't created.")
+          }
         }
         else{
           console.log('Error, invalid value.');
@@ -172,17 +216,25 @@
 
       // download qr code
       function downloadQrcode(filetype){
-        if(filetype == "png"){
-          var value = document.getElementById('qr-input').value;
-          var qrlink = "https://api.qrserver.com/v1/create-qr-code/?size=900x900&format=png&margin=0&data=" + value;
-          var qrcode = document.getElementById("qr-code-img");
-          qrcode.src = qrlink;
+        if(filetype == null){
+          var filetype = document.getElementById('qr-filetype').value;
         }
-        else if(filetype == "svg"){
-          var value = document.getElementById('qr-input').value;
-          var qrlink = "https://api.qrserver.com/v1/create-qr-code/?size=900x900&format=svg&margin=0&data=" + value;
-          var qrcode = document.getElementById("qr-code-img");
-          qrcode.src = qrlink;
+        newQrcode(filetype, true);
+        var qrcode = document.getElementById("qr-code-img");
+        var qrcodeDownload = qrcode.src + "&download=1"
+        location.href = qrcodeDownload;
+        console.log("Qr code downloaded.")
+      }
+
+      // toggle settings
+      function toggleSettings(){
+        var settings = document.getElementById('qr-settings');
+        var toggleStat = settings.style.display;
+        if(toggleStat == "block"){
+          settings.style.display = "none";
+        }
+        else{
+          settings.style.display = "block";
         }
       }
 
