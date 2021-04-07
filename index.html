@@ -123,7 +123,7 @@
         <div id="footer">
           <h3>Hinweis</h3>
           <p>Um die QR-Codes zu erstellen wird die API von goqr.me verwendet. Wenn sie einen QR-Code erstellen, werden die eingegeben Daten an goqr.me &uuml;bermittelt.</p>
-          <p><a href="https://github.com/michivonah/qrcode#readme">Version 1.2.0</a></p>
+          <p><a href="https://github.com/michivonah/qrcode#readme">Version 1.2.1</a></p>
         </div>
         <button id="history-btn" onclick="toggleHistory()"><i class="fas fa-history"></i></button>
       </div>
@@ -131,6 +131,7 @@
       <div id="history">
         <h3>History <i class="fas fa-history"></i></h3>
         <p>Hier findest du deine zuletzt erstellten QR-Codes:</p>
+        <p id="totalhistory">Total: 0</p>
         <button id="close-history" onclick="toggleHistory()"><i class="fas fa-times"></i> History schliessen</button>
 
         <div id="entry1" class="history-entry" style="display:none;">
@@ -148,6 +149,8 @@
         if(window.matchMedia('(prefers-color-scheme: dark)').matches || localStorage.getItem('darkmode') == "true"){
               document.body.style.setProperty('--color', '#fff');
               document.body.style.setProperty('--background', '#000');
+              document.body.style.setProperty('--theme', '#2ecc71');
+              document.body.style.setProperty('--theme2', '#27ae60');
               document.getElementById("qr-code-img").src = "favicon-white.png";
           }
         $("#loading-screen").fadeOut(750);
@@ -164,15 +167,19 @@
           else{
             var value = "https://" + document.getElementById('qr-input').value;
           }
+          var qrtitle = "URL";
         }
         else if(type == "text"){
           var value = document.getElementById('text-input').value;
+          var qrtitle = "Text";
         }
         else if(type == "image"){
           var value = document.getElementById('text-input').value;
+          var qrtitle = "Bild";
         }
         else if(type == "video"){
           var value = document.getElementById('video-input').value;
+          var qrtitle = "Video";
         }
         else if(type == "contact"){
           // MECARD:N:NAME;TEL:000;EMAIL:example@example.com;;
@@ -181,6 +188,7 @@
           var tel = document.getElementById('contact-tel-input').value;
 
           var value = "MECARD:N:" + fullname + ";TEL:" + tel + ";EMAIL:" + email + ";;";
+          var qrtitle = "Kontakt";
         }
         else if(type == "wlan"){
           // WIFI:S:<SSID>;T:<WPA|WEP|>;P:<password>;;
@@ -189,12 +197,15 @@
           var encryption = document.getElementById('wlan-encryption-input').value;
 
           var value = "WIFI:S:" + ssid + ";T:" + encryption + ";P:" + password + ";;";
+
+          var qrtitle = "WLAN Netzwerk";
         }
         else if(type == "whatsapp"){
           var number = document.getElementById('whatsapp-number-input').value;
           var text = document.getElementById('whatsapp-text-input').value;
 
           var value = "https://api.whatsapp.com/send?phone=" + number + "&text=" + text;
+          var qrtitle = "WhatsApp";
         }
 
         // generate
@@ -210,7 +221,7 @@
             qrcode.src = qrlink;
             console.log('QR-Code generated succesfully.')
             console.log(qrlink);
-            addToHistory('QR-Code', value, qrlink);
+            addToHistory(qrtitle, value, qrlink);
           }
           else if(size == true){
             var qrsize = document.getElementById('qr-size').value;
@@ -218,7 +229,7 @@
             qrcode.src = qrlink;
             console.log('Sized qr code generated succesfully.')
             console.log(qrlink);
-            addToHistory('sized QR-Code', value, qrlink);
+            addToHistory(qrtitle, value, qrlink);
           }
           else{
             console.log("Error, qr code can't created.")
@@ -275,6 +286,12 @@
       function deleteFromHistory(){
         var clickedButton = document.getElementById(event.target.id);
         clickedButton.parentElement.remove();
+        var itemNum = event.target.id.replace('entryButtonID', '');
+        localStorage.setItem('itemName' + itemNum, "#");
+        localStorage.setItem('itemURL' + itemNum, "#");
+        localStorage.setItem('itemImage' + itemNum, "#");
+        var newHistory = localStorage.getItem('totalItems') - 1;
+        localStorage.setItem('totalItems', newHistory);
       }
 
       function addToHistory(name, url, image){
@@ -325,6 +342,9 @@
         localStorage.setItem('itemImage' + historyCounter, image);
 
         localStorage.setItem('totalItems', historyCounter);
+
+        var totalhistory = document.getElementById('totalhistory');
+        totalhistory.textContent = "Total: " +   localStorage.getItem('totalItems');
       }
 
       function toggleHistory(){
@@ -371,6 +391,9 @@
           history.appendChild(newEntry);
 
         }
+
+        var totalhistory = document.getElementById('totalhistory');
+        totalhistory.textContent = "Total: " + totalItems;
       }
 
       </script>
