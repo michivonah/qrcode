@@ -93,16 +93,23 @@ body{
      margin-right: 10%;
      bottom: 20px;
      color: #fff;
-     background: var(--theme2);
+     background: var(--theme);
      position: fixed;
      outline: none;
+     display: none;
+     z-index: 1002;
+   }
+
+   #close-history:hover{
+     background: var(--theme2);
    }
 
    #history{
-     height: calc(100vh - 66px);
+     height: auto;
+     min-height: calc(100vh - 66px);
      width: 30%;
      max-width: 400px;
-     position: fixed;
+     position: absolute;
      top: 0;
      left: 0;
      background: var(--theme);
@@ -313,15 +320,13 @@ body{
        background: var(--theme2);
      }
      #history{
-       height: calc(100vh - 66px);
        width: 100%;
        max-width: 100%;
-       position: fixed;
-       top: 0;
-       left: 0;
-       padding-top: 66px;
        border-bottom-right-radius: 8px;
        border-bottom-left-radius: 8px;
+     }
+     #close-history{
+       display: block;
      }
    }
 
