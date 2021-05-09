@@ -18,9 +18,16 @@ A easy to use tool for creating qr codes with the api from goqr.me
 - [x] saving latest QR-Codes in history
 - [ ] english version
 - [ ] own themes
+- [x] download as PWA
 
 # Changelog
 Here you find all changes and updates
+
+### Version 1.2.2
+- PWA function (service worker)
+- stats
+- better history
+- little improvements
 
 ### Version 1.2.1
 - total count
