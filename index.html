@@ -61,7 +61,7 @@
           <div id="input-container">
             <p id="future-function" style="display:none;">Diese Funktion steht aktuell noch nicht zur Verf&uuml;gung.</p>
             <div id="url-container" class="input-container" style="display: block;">
-              <input id="qr-input" type="url" placeholder="URL einfügen">
+              <input id="qr-input" type="text" placeholder="URL einfügen">
             </div>
             <div id="text-container" class="input-container">
               <textarea id="text-input" placeholder="Text hier schreiben..."></textarea>
@@ -123,7 +123,7 @@
         <div id="footer">
           <h3>Hinweis</h3>
           <p>Um die QR-Codes zu erstellen wird die API von goqr.me verwendet. Wenn sie einen QR-Code erstellen, werden die eingegeben Daten an goqr.me &uuml;bermittelt.</p>
-          <p><a href="https://github.com/michivonah/qrcode#readme">Version 1.2.1</a></p>
+          <p><a href="https://github.com/michivonah/qrcode#readme">Version 1.2.2</a></p>
         </div>
         <button id="history-btn" onclick="toggleHistory()"><i class="fas fa-history"></i></button>
       </div>
@@ -141,20 +141,26 @@
         </div>
       </div>
 
+      <img id="stats" src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fqr.michivonah.ch&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" style="display:none;">
+
 
       <script>
       // Loading
-      $(window).on("load", function(){
+      window.addEventListener('load', () => {
         loadHistory();
         if(window.matchMedia('(prefers-color-scheme: dark)').matches || localStorage.getItem('darkmode') == "true"){
-              document.body.style.setProperty('--color', '#fff');
-              document.body.style.setProperty('--background', '#000');
-              document.body.style.setProperty('--theme', '#2ecc71');
-              document.body.style.setProperty('--theme2', '#27ae60');
-              document.getElementById("qr-code-img").src = "favicon-white.png";
-          }
+            document.body.style.setProperty('--color', '#fff');
+            document.body.style.setProperty('--background', '#000');
+            document.body.style.setProperty('--theme', '#2ecc71');
+            document.body.style.setProperty('--theme2', '#27ae60');
+            document.getElementById("qr-code-img").src = "favicon-white.png";
+        }
+        if('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/service-worker.js');
+        }
         $("#loading-screen").fadeOut(750);
       });
+
 
       // create qr code
       function newQrcode(fileformat, size){
@@ -290,11 +296,17 @@
         localStorage.setItem('itemName' + itemNum, "#");
         localStorage.setItem('itemURL' + itemNum, "#");
         localStorage.setItem('itemImage' + itemNum, "#");
-        var newHistory = localStorage.getItem('totalItems') - 1;
-        localStorage.setItem('totalItems', newHistory);
+
+        var totalCount = sessionStorage.getItem('totalCount');
+        totalCount--;
+        sessionStorage.setItem('totalCount', totalCount);
+        var totalhistory = document.getElementById('totalhistory');
+        totalhistory.textContent = "Total: " + sessionStorage.getItem('totalCount', totalCount);
       }
 
       function addToHistory(name, url, image){
+        var totalCount = sessionStorage.getItem('totalCount');
+        totalCount++;
         if(localStorage.getItem('totalItems') == null){
           localStorage.setItem('totalItems', 0)
         }
@@ -343,8 +355,10 @@
 
         localStorage.setItem('totalItems', historyCounter);
 
+
+        sessionStorage.setItem('totalCount', totalCount);
         var totalhistory = document.getElementById('totalhistory');
-        totalhistory.textContent = "Total: " +   localStorage.getItem('totalItems');
+        totalhistory.textContent = "Total: " + sessionStorage.getItem('totalCount', totalCount);
       }
 
       function toggleHistory(){
@@ -361,39 +375,46 @@
         var history = document.getElementById('history');
         var loopcount = 0;
         var totalItems = localStorage.getItem('totalItems');
+        var totalCount = 0;
         while(loopcount < totalItems){
           loopcount++;
           // create new entry
-          var newEntry = document.createElement('div');
-          newEntry.id = "entryID" + loopcount;
-          newEntry.classList = "history-entry";
-          var newName = document.createElement('p');
-          newName.textContent = localStorage.getItem('itemName' + loopcount);
-          newName.classList = "history-entry-name";
-          var newUrl = document.createElement('p');
-          newUrl.textContent = localStorage.getItem('itemURL' + loopcount);
-          newUrl.classList = "history-entry-url";
-          var newImage = document.createElement('img');
-          newImage.src = localStorage.getItem('itemImage' + loopcount);
-          var newDeleteBtn = document.createElement('button');
-          newDeleteBtn.id = "entryButtonID" + loopcount;
-          var newI = document.createElement('i');
-          newI.classList = "fas fa-trash";
-          newDeleteBtn.appendChild(newI);
-          newDeleteBtn.addEventListener("click", function(){
-            deleteFromHistory();
-          });
+          if(localStorage.getItem('itemName' + loopcount) != "#"){
+            var newEntry = document.createElement('div');
+            newEntry.id = "entryID" + loopcount;
+            newEntry.classList = "history-entry";
+            var newName = document.createElement('p');
+            newName.textContent = localStorage.getItem('itemName' + loopcount);
+            newName.classList = "history-entry-name";
+            var newUrl = document.createElement('p');
+            newUrl.textContent = localStorage.getItem('itemURL' + loopcount);
+            newUrl.classList = "history-entry-url";
+            var newImage = document.createElement('img');
+            newImage.src = localStorage.getItem('itemImage' + loopcount);
+            var newDeleteBtn = document.createElement('button');
+            newDeleteBtn.id = "entryButtonID" + loopcount;
+            var newI = document.createElement('i');
+            newI.classList = "fas fa-trash";
+            newDeleteBtn.appendChild(newI);
+            newDeleteBtn.addEventListener("click", function(){
+              deleteFromHistory();
+            });
 
-          newEntry.appendChild(newImage);
-          newEntry.appendChild(newName);
-          newEntry.appendChild(newUrl);
-          newEntry.appendChild(newDeleteBtn);
-          history.appendChild(newEntry);
+            newEntry.appendChild(newImage);
+            newEntry.appendChild(newName);
+            newEntry.appendChild(newUrl);
+            newEntry.appendChild(newDeleteBtn);
+            history.appendChild(newEntry);
+
+            totalCount++;
+          }
+
 
         }
 
+        sessionStorage.setItem('totalCount', totalCount);
         var totalhistory = document.getElementById('totalhistory');
-        totalhistory.textContent = "Total: " + totalItems;
+        totalhistory.textContent = "Total: " + sessionStorage.getItem('totalCount', totalCount);
       }
 
       </script>
