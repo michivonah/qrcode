@@ -40,6 +40,7 @@
           <p>Hier kannst du kostenlos QR-Codes erstellen. W&auml;hle unten einfach aus, welche Art von QR-Code du erstellen willst und f&uuml;ge dann den Inhalt hinzu.</p>
         </div>
         <div id="creator">
+          <img id="qr-code-img" src="favicon.png">
           <div id="qr-types">
             <select id="active-type" style="display:none;">
               <option>url</option>
@@ -85,13 +86,15 @@
               <input id="wlan-password-input" type="password" placeholder="Passwort">
               <select id="wlan-encryption-input">
                 <optgroup label="Verschlüsselung"></optgroup>
+                <option value="none">Keine Verschl&uuml;sselung</option>
                 <option>WPA</option>
                 <option>WEP</option>
               </select>
             </div>
           </div>
           <button id="create-btn" class="createButtons" onclick="newQrcode()">QR-Code erstellen</button>
-          <img id="qr-code-img" src="favicon.png">
+          <!--- here !--->
+          <img id="qr-code-img-sp" src="favicon.png">
           <button class="createButtons" onclick="downloadQrcode()">QR-Code herunterladen</button>
           <p><a href="#qr-settings" onclick="toggleSettings()">QR-Code Eigenschaften</a></p>
           <div id="qr-settings" style="display:none;">
@@ -123,7 +126,7 @@
         <div id="footer">
           <h3>Hinweis</h3>
           <p>Um die QR-Codes zu erstellen wird die API von goqr.me verwendet. Wenn sie einen QR-Code erstellen, werden die eingegeben Daten an goqr.me &uuml;bermittelt.</p>
-          <p><a href="https://github.com/michivonah/qrcode#readme">Version 1.2.2</a></p>
+          <p><a href="https://github.com/michivonah/qrcode#readme">Version 1.2.3</a></p>
         </div>
         <button id="history-btn" onclick="toggleHistory()"><i class="fas fa-history"></i></button>
       </div>
@@ -154,6 +157,7 @@
             document.body.style.setProperty('--theme', '#2ecc71');
             document.body.style.setProperty('--theme2', '#27ae60');
             document.getElementById("qr-code-img").src = "favicon-white.png";
+            document.getElementById("qr-code-img-sp").src = "favicon-white.png";
         }
         if('serviceWorker' in navigator) {
           navigator.serviceWorker.register('/service-worker.js');
@@ -166,6 +170,7 @@
       function newQrcode(fileformat, size){
         var type = document.getElementById('active-type').value;
         var qrcode = document.getElementById("qr-code-img");
+        var qrcodeSP = document.getElementById("qr-code-img-sp");
         if(type == "url"){
           if(document.getElementById('qr-input').value.toLowerCase().includes('http')){
             var value = document.getElementById('qr-input').value;
@@ -202,7 +207,12 @@
           var password = document.getElementById('wlan-password-input').value;
           var encryption = document.getElementById('wlan-encryption-input').value;
 
-          var value = "WIFI:S:" + ssid + ";T:" + encryption + ";P:" + password + ";;";
+          if(encryption == "none"){
+            var value = "WIFI:S:" + ssid + ";T:" + "nopass" + ";P:" + "password" + ";;";
+          }
+          else{
+            var value = "WIFI:S:" + ssid + ";T:" + encryption + ";P:" + password + ";;";
+          }
 
           var qrtitle = "WLAN Netzwerk";
         }
@@ -214,7 +224,7 @@
           var qrtitle = "WhatsApp";
         }
 
-        // generate
+        // generate qr code
         // goqr server https://api.qrserver.com/v1/create-qr-code/?size=900x900&format=png&margin=0&data=Hello%20world
         // google server: https://chart.googleapis.com/chart?chs=500x500&cht=qr&choe=UTF-8&chl=Hello%20world
         if(fileformat == null){
@@ -225,6 +235,7 @@
           if(size == null){
             var qrlink = "https://api.qrserver.com/v1/create-qr-code/?size=900x900&format=" + fileformat + "&margin=0&data=" + value;
             qrcode.src = qrlink;
+            qrcodeSP.src = qrlink;
             console.log('QR-Code generated succesfully.')
             console.log(qrlink);
             addToHistory(qrtitle, value, qrlink);
@@ -233,6 +244,7 @@
             var qrsize = document.getElementById('qr-size').value;
             var qrlink = "https://api.qrserver.com/v1/create-qr-code/?size=" + qrsize + "&format=" + fileformat + "&margin=0&data=" + value;
             qrcode.src = qrlink;
+            qrcodeSP.src = qrlink;
             console.log('Sized qr code generated succesfully.')
             console.log(qrlink);
             addToHistory(qrtitle, value, qrlink);
@@ -408,7 +420,6 @@
 
             totalCount++;
           }
-
 
         }
 
