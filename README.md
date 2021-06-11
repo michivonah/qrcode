@@ -3,7 +3,7 @@ A easy to use tool for creating qr codes with the api from goqr.me
 
 # Features
 - Create QR-Codes for any URL, Text, contact or wifi network.
-- Automatic darkmode
+- Automatic enabled darkmode
 - Download qr codes as PNG, JPG, GIF or SVG file
 - History of your qr codes
 
@@ -13,7 +13,7 @@ A easy to use tool for creating qr codes with the api from goqr.me
 - [ ] qr code for Maps Location
 - [ ] qr codes for images
 - [x] download Function for created qr codes
-- [ ] better design on mobile devices and desktop (optimised using of empty space)
+- [x] better design on mobile devices and desktop (optimised using of empty space)
 - [x] changing qr code size
 - [x] saving latest QR-Codes in history
 - [ ] english version
@@ -22,6 +22,11 @@ A easy to use tool for creating qr codes with the api from goqr.me
 
 # Changelog
 Here you find all changes and updates
+
+### Version 1.2.3 (11 juin)
+- optimzed design on desktop
+- support for non encrypted wlan networks
+- little improvements
 
 ### Version 1.2.2
 - PWA function (service worker)
