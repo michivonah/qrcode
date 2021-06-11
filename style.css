@@ -146,7 +146,7 @@ body{
    .history-entry p{
      margin: 10px;
      flex-grow: 1;
-
+     text-align: justify;
    }
 
    .history-entry button{
@@ -166,7 +166,7 @@ body{
    }
 
    #creator input{
-     width: 90%;
+     width: 50%;
      height: auto;
      font-size: 22px;
      margin: 5px;
@@ -180,7 +180,7 @@ body{
    }
 
    #creator textarea{
-     width: 90%;
+     width: 50%;
      height: auto;
      min-height: 80px;
      font-size: 18px;
@@ -196,7 +196,7 @@ body{
    }
 
    #creator select{
-     width: 90%;
+     width: 50%;
      height: auto;
      font-size: 18px;
      margin: 5px;
@@ -210,9 +210,9 @@ body{
    }
 
    .createButtons{
-     width: 90%;
+     width: 50%;
      height: auto;
-     font-size: 24px;
+     font-size: 22px;
      margin: 5px;
      background: var(--theme);
      color: #fff;
@@ -228,12 +228,23 @@ body{
    }
 
    #qr-code-img{
+     width: 30%;
+     max-width: 400px;
+     height: auto;
+     margin: 15px;
+     margin-left: 5%;
+     margin-right: 5%;
+     float: right;
+   }
+
+   #qr-code-img-sp{
      width: 90%;
      max-width: 400px;
      height: auto;
      margin: 15px;
      margin-left: 5%;
      margin-right: 5%;
+     display: none;
    }
 
    #qr-types{
@@ -345,6 +356,32 @@ body{
        user-select: none;
        margin: 5px;
        border-radius: 8px;
+     }
+   }
+
+   @media screen and (max-width:900px){
+     #creator input{
+       width: 90%;
+     }
+
+     #creator textarea{
+       width: 90%;
+     }
+
+     #creator select{
+       width: 90%;
+     }
+
+     .createButtons{
+       width: 90%;
+     }
+
+     #qr-code-img{
+       display: none;
+     }
+
+     #qr-code-img-sp{
+       display: block;
      }
    }
 
